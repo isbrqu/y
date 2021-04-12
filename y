@@ -9,6 +9,7 @@ declare -r DEBUG="true"
 declare -Ar sps=(
     [channel]="EgIQAg"
 )
+
 declare -ar path_json=(
     "contents"
     "twoColumnSearchResultsRenderer"
@@ -19,8 +20,13 @@ declare -ar path_json=(
     "contents"
 )
 
-declare DOWN
+declare -r URL_BASE_YOUTUBE="www.youtube.com"
+declare -r URL_VIDEO="https://$URL_BASE_YOUTUBE/watch?v="
+declare -r URL_LIST="https://$URL_BASE_YOUTUBE/playlist?list="
+declare -r URL_CHANNEL="https://$URL_BASE_YOUTUBE/channel/"
+declare -r URL_RESULTS="https://$URL_BASE_YOUTUBE/results"
 
+declare DOWN
 DOWN=".$(IFS=.; echo "${path_json[*]}")"
 
 usage() {
@@ -30,8 +36,6 @@ usage() {
 get_yt_html() {
     local sp="${sps[$1]}"
     local query="$2" 
-    local -r URL_BASE="www.youtube.com"
-    local -r URL_RESULTS="https://$URL_BASE/results"
     local -r LANG="en-US,en;q=0.9"
     local useragent
     local html
@@ -47,7 +51,7 @@ get_yt_html() {
         --location\
         --compressed)"
     else
-        html="$(cat tmp/html)"
+        html="$(cat tmp/html_channel)"
     fi
     echo "$html"
 }
@@ -64,6 +68,8 @@ get_channels() {
     local json="$1"
     local channels
     channels="$(echo "$json" | jq "$DOWN")"
+    channels="$(echo "$channels" | jq --from-file jq/channel.jq\
+            --arg url "$URL_CHANNEL")"
     echo "$channels"
 }
 
