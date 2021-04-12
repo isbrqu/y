@@ -3,7 +3,7 @@
         "title":
             .title.simpleText,
         "url":
-            ($url + .channelId + "/videos"),
+            ($url1 + .channelId + "/videos"),
         "subscriberCount": 
             ((.subscriberCountText.simpleText | sub(" .+"; ""))? // ""),
         "videoCount": 

@@ -4,10 +4,11 @@
 # set -o pipefail
 # set -o nounset
 # set -o xtrace
-declare -r DEBUG="true"
+# declare -r DEBUG="true"
 
 declare -Ar sps=(
     [channel]="EgIQAg"
+    [video]="EgIQAQ"
 )
 
 declare -ar path_json=(
@@ -65,12 +66,13 @@ get_yt_html() {
 get_yt_json() {
     local html="$1"
     local file="$2"
-    local url="$3"
+    local url1="$3"
+    local url2="$4"
     local regex="(?<=var ytInitialData = ){.*}(?=;)"
     local json
     json="$(echo "$html" | grep --perl-regexp --only-matching "$regex")"
     json="$(echo "$json" | jq "$DOWN")"
-    json="$(echo "$json" | jq --from-file "$file" --arg url "$url")"
+    json="$(echo "$json" | jq --from-file "$file" --arg url1 "$url1" --arg url2 "$url2")"
     echo "$json"
 }
 
@@ -78,16 +80,25 @@ channel() {
     local query="$*"
     local type="channel"
     local file="jq/channel.jq" 
-    local url="$URL_CHANNEL"
+    local url1="$URL_CHANNEL"
     local html
     local json
     html="$(get_yt_html "$type" "$query")"
-    json="$(get_yt_json "$html" "$file" "$url")"
+    json="$(get_yt_json "$html" "$file" "$url1")"
     echo "$json"
 }
 
 video() {
-    echo "video"
+    local query="$*"
+    local type="video"
+    local file="jq/video.jq" 
+    local url1="$URL_VIDEO"
+    local url2="$URL_CHANNEL"
+    local html
+    local json
+    html="$(get_yt_html "$type" "$query")"
+    json="$(get_yt_json "$html" "$file" "$url1" "$url2")"
+    echo "$json"
 }
 
 playlist() {
