@@ -7,8 +7,9 @@
 # declare -r DEBUG="true"
 
 declare -Ar sps=(
-    [channel]="EgIQAg"
     [video]="EgIQAQ"
+    [channel]="EgIQAg"
+    [playlist]="EgIQAw"
 )
 
 declare -ar path_json=(
@@ -25,7 +26,7 @@ DOWN=".$(IFS=.; echo "${path_json[*]}")"
 
 declare -r URL_BASE_YOUTUBE="www.youtube.com"
 declare -r URL_VIDEO="https://$URL_BASE_YOUTUBE/watch?v="
-declare -r URL_LIST="https://$URL_BASE_YOUTUBE/playlist?list="
+declare -r URL_PLAYLIST="https://$URL_BASE_YOUTUBE/playlist?list="
 declare -r URL_CHANNEL="https://$URL_BASE_YOUTUBE/channel/"
 declare -r URL_RESULTS="https://$URL_BASE_YOUTUBE/results"
 
@@ -102,7 +103,16 @@ video() {
 }
 
 playlist() {
-    echo "playlist"
+    local query="$*"
+    local type="playlist"
+    local file="jq/playlist.jq" 
+    local url1="$URL_PLAYLIST"
+    local url2="$URL_CHANNEL"
+    local html
+    local json
+    html="$(get_yt_html "$type" "$query")"
+    json="$(get_yt_json "$html" "$file" "$url1" "$url2")"
+    echo "$json"
 }
 
 main() {
