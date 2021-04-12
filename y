@@ -19,6 +19,8 @@ declare -ar path_json=(
     "itemSectionRenderer"
     "contents"
 )
+declare DOWN
+DOWN=".$(IFS=.; echo "${path_json[*]}")"
 
 declare -r URL_BASE_YOUTUBE="www.youtube.com"
 declare -r URL_VIDEO="https://$URL_BASE_YOUTUBE/watch?v="
@@ -26,11 +28,15 @@ declare -r URL_LIST="https://$URL_BASE_YOUTUBE/playlist?list="
 declare -r URL_CHANNEL="https://$URL_BASE_YOUTUBE/channel/"
 declare -r URL_RESULTS="https://$URL_BASE_YOUTUBE/results"
 
-declare DOWN
-DOWN=".$(IFS=.; echo "${path_json[*]}")"
-
 usage() {
-    echo 'ch [lv|lp|sh|rm|ed]'
+    echo 'youtuber [video|channel|playlist] <query>'
+    echo 'youtuber [channelid|playlistid] <channelid|playlistid>'
+}
+
+error() {
+    local msg="$1"
+    echo "error: $msg" >&2
+    exit 1
 }
 
 get_yt_html() {
@@ -58,73 +64,26 @@ get_yt_html() {
 
 get_yt_json() {
     local html="$1"
-    local json
+    local file="$2"
+    local url="$3"
     local regex="(?<=var ytInitialData = ){.*}(?=;)"
+    local json
     json="$(echo "$html" | grep --perl-regexp --only-matching "$regex")"
+    json="$(echo "$json" | jq "$DOWN")"
+    json="$(echo "$json" | jq --from-file "$file" --arg url "$url")"
     echo "$json"
-}
-
-get_channels() {
-    local json="$1"
-    local channels
-    channels="$(echo "$json" | jq "$DOWN")"
-    channels="$(echo "$channels" | jq --from-file jq/channel.jq\
-            --arg url "$URL_CHANNEL")"
-    echo "$channels"
-}
-
-error() {
-    local msg="$1"
-    echo "error: $msg" >&2
-    exit 1
 }
 
 channel() {
-    local action="$1"
-    shift
-    case "$action" in
-        lv) channel_list_videos "$@";;
-        lp) channel_list_playlists "$@";;
-        sh) channel_search "$@";;
-        rm) channel_remove "$@";;
-        ed) channel_edit "$@";;
-        help) channel_usage;;
-        *)
-            channel_usage
-            error "action not found"
-        ;;
-    esac
-}
-
-channel_usage() {
-    echo usage
-}
-
-channel_list_videos() {
-    echo bruh
-}
-
-channel_list_playlists() {
-    echo bruh
-}
-
-channel_search() {
-    local query="$1"
+    local query="$*"
     local type="channel"
+    local file="jq/channel.jq" 
+    local url="$URL_CHANNEL"
     local html
     local json
     html="$(get_yt_html "$type" "$query")"
-    json="$(get_yt_json "$html")"
-    json="$(get_channels "$json")"
+    json="$(get_yt_json "$html" "$file" "$url")"
     echo "$json"
-}
-
-channel_remove() {
-    echo bruh
-}
-
-channel_edit() {
-    echo bruh
 }
 
 video() {
