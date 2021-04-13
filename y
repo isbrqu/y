@@ -1,10 +1,4 @@
 #!/usr/bin/env bash
-shopt -s extglob
-# set -o errexit
-# set -o pipefail
-# set -o nounset
-# set -o xtrace
-# declare -r DEBUG="true"
 
 declare -Ar sps=(
     [video]="EgIQAQ"
