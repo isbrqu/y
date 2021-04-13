@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+shopt -s extglob
 # set -o errexit
 # set -o pipefail
 # set -o nounset
@@ -73,14 +73,15 @@ get_yt_json() {
     local json
     json="$(echo "$html" | grep --perl-regexp --only-matching "$regex")"
     json="$(echo "$json" | jq "$DOWN")"
-    json="$(echo "$json" | jq --from-file "$file" --arg url1 "$url1" --arg url2 "$url2")"
+    json="$(echo "$json"\
+        | jq --from-file "$file" --arg url1 "$url1" --arg url2 "$url2")"
     echo "$json"
 }
 
 channel() {
     local query="$*"
     local type="channel"
-    local file="jq/channel.jq" 
+    local file="jq/$type.jq" 
     local url1="$URL_CHANNEL"
     local html
     local json
@@ -92,7 +93,7 @@ channel() {
 video() {
     local query="$*"
     local type="video"
-    local file="jq/video.jq" 
+    local file="jq/$type.jq" 
     local url1="$URL_VIDEO"
     local url2="$URL_CHANNEL"
     local html
@@ -105,7 +106,7 @@ video() {
 playlist() {
     local query="$*"
     local type="playlist"
-    local file="jq/playlist.jq" 
+    local file="jq/$type.jq" 
     local url1="$URL_PLAYLIST"
     local url2="$URL_CHANNEL"
     local html
@@ -117,25 +118,34 @@ playlist() {
 
 main() {
     local action="$1"
+    local json="null"
+    local -i attempt=16
     shift
-    case "$action" in
-        ch|channel)
-            channel "$@"
-        ;;
-        vd|video)
-            video "$@"
-        ;;
-        pl|playlist)
-            playlist "$@"
-        ;;
-        help)
-            usage
-        ;;
-        *)
-            usage
-            error "action not found"
-        ;;
-    esac
+    while [[ ("$json" == "null" || "$json" == "[]") && "$attempt" -gt 0 ]];do
+        case "$action" in
+            ch|channel)
+                json="$(channel "$@")"
+            ;;
+            vd|video)
+                json="$(video "$@")"
+            ;;
+            pl|playlist)
+                json="$(playlist "$@")"
+            ;;
+            help)
+                usage
+                exit
+            ;;
+            *)
+                usage
+                error "action not found"
+            ;;
+        esac
+        if [[ "$json" != "null" && "$json" != "[]" ]];then
+            echo "$json"
+        fi
+        (( attempt-- ))
+    done
 }
 
 main "$@"
