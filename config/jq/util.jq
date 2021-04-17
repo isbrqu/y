@@ -7,17 +7,26 @@ def down:
     .itemSectionRenderer
     .contents;
 
-def urlVideo:
-    ("https://www.youtube.com/watch?v=" + .videoId);
+def urlBaseVideo:
+    "https://www.youtube.com/watch?v=";
 
-def urlPlaylist:
-    ("https://www.youtube.com/playlist?list=" + .playlistId);
+def urlBasePlaylist:
+    "https://www.youtube.com/playlist?list=";
 
-def urlVideos:
-    ("https://www.youtube.com/channel/" + .channelId + "/videos");
+def urlBaseChannel:
+    "https://www.youtube.com/channel/";
 
-def urlPlaylists:
-    ("https://www.youtube.com/channel/"  + .channelId + "/playlists");
+def videoUrl:
+    (urlBaseVideo + .videoId);
+
+def playlistUrl:
+    (urlBasePlaylist + .playlistId);
+
+def videosUrl:
+    (urlBaseChannel + .channelId + "/videos");
+
+def playlistsUrl:
+    (urlBaseChannel + .channelId + "/playlists");
 
 def title: (
     .title |
@@ -63,8 +72,7 @@ def channelId: (
 );
 
 def channelUrl: (
-    "https://www.youtube.com/channel/" 
-    + .longBylineText.runs[0].navigationEndpoint.browseEndpoint.browseId
+    urlBaseChannel + channelId
 );
 
 def channelName: (

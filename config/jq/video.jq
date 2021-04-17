@@ -4,7 +4,7 @@ include "config/jq/util";
         id:
             .videoId,
         url:
-            urlVideo,
+            videoUrl,
         title:
             title,
         publishedTime:

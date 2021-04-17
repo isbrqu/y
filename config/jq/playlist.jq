@@ -4,7 +4,7 @@ include "config/jq/util";
         id:
             .playlistId,
         url:
-            urlVideo,
+            playlistUrl,
         title:
             title,
         views:

@@ -4,9 +4,9 @@ include "config/jq/util";
         id:
             .channelId,
         urlVideos:
-            urlVideos,
+            videosUrl,
         urlPlaylists:
-            urlPlaylists,
+            playlistsUrl,
         title:
             title,
         subscribers: 
