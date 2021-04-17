@@ -31,8 +31,10 @@ declare -r URL_CHANNEL="https://$URL_BASE_YOUTUBE/channel/"
 declare -r URL_RESULTS="https://$URL_BASE_YOUTUBE/results"
 
 usage() {
-    echo 'youtuber [video|channel|playlist] <query>'
-    echo 'youtuber [channelid|playlistid] <channelid|playlistid>'
+    echo "usage:"
+    echo -e "\ty [video|channel|playlist] <query>"
+    echo -e "\ty [channel-video|channel-playlist] <channelid>"
+    echo -e "\ty playlist-video <playlistid>"
 }
 
 error() {
