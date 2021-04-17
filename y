@@ -24,11 +24,11 @@ declare -ar path_json=(
 declare DOWN
 DOWN=".$(IFS=.; echo "${path_json[*]}")"
 
-declare -r URL_BASE_YOUTUBE="www.youtube.com"
-declare -r URL_VIDEO="https://$URL_BASE_YOUTUBE/watch?v="
-declare -r URL_PLAYLIST="https://$URL_BASE_YOUTUBE/playlist?list="
-declare -r URL_CHANNEL="https://$URL_BASE_YOUTUBE/channel/"
-declare -r URL_RESULTS="https://$URL_BASE_YOUTUBE/results"
+declare -r URL_BASE="www.youtube.com"
+declare -r URL_VIDEO="https://$URL_BASE/watch?v="
+declare -r URL_PLAYLIST="https://$URL_BASE/playlist?list="
+declare -r URL_CHANNEL="https://$URL_BASE/channel/"
+declare -r URL_RESULTS="https://$URL_BASE/results"
 
 usage() {
     echo "usage:"
