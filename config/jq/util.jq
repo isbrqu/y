@@ -8,16 +8,16 @@ def down:
     .contents;
 
 def urlVideo:
-    ($url1 + .videoId);
+    ("https://www.youtube.com/watch?v=" + .videoId);
 
 def urlPlaylist:
-    ($url1 + .playlistId);
+    ("https://www.youtube.com/playlist?list=" + .playlistId);
 
 def urlVideos:
-    ($url1 + .channelId + "/videos");
+    ("https://www.youtube.com/channel/" + .channelId + "/videos");
 
 def urlPlaylists:
-    ($url1 + .channelId + "/playlists");
+    ("https://www.youtube.com/channel/"  + .channelId + "/playlists");
 
 def title: (
     .title |
@@ -63,7 +63,8 @@ def channelId: (
 );
 
 def channelUrl: (
-    $url2 + .longBylineText.runs[0].navigationEndpoint.browseEndpoint.browseId
+    "https://www.youtube.com/channel/" 
+    + .longBylineText.runs[0].navigationEndpoint.browseEndpoint.browseId
 );
 
 def channelName: (
