@@ -12,18 +12,6 @@ declare -Ar sps=(
     [playlist]="EgIQAw"
 )
 
-declare -ar path_json=(
-    "contents"
-    "twoColumnSearchResultsRenderer"
-    "primaryContents"
-    "sectionListRenderer"
-    "contents[0]"
-    "itemSectionRenderer"
-    "contents"
-)
-declare DOWN
-DOWN=".$(IFS=.; echo "${path_json[*]}")"
-
 declare -r URL_BASE="www.youtube.com"
 declare -r URL_VIDEO="https://$URL_BASE/watch?v="
 declare -r URL_PLAYLIST="https://$URL_BASE/playlist?list="
