@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+declare -r CONFIG="config"
+declare USERAGENT
+USERAGENT="$(cat $CONFIG/useragent)"
+
 declare -Ar sps=(
     [video]="EgIQAQ"
     [channel]="EgIQAg"
@@ -49,7 +53,7 @@ get_yt_html() {
         --get --data-urlencode "sp=$sp"\
         --header "authority: $URL_BASE"\
         --header "accept-language: $LANG"\
-        --header "user-agent: $useragent"\
+        --header "user-agent: $USERAGENT"\
         --location\
         --compressed)"
     else
