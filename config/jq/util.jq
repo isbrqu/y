@@ -1,3 +1,24 @@
+def down:
+    .contents
+    .twoColumnSearchResultsRenderer
+    .primaryContents
+    .sectionListRenderer
+    .contents[0]
+    .itemSectionRenderer
+    .contents;
+
+def urlVideo:
+    ($url1 + .videoId);
+
+def urlPlaylist:
+    ($url1 + .playlistId);
+
+def urlVideos:
+    ($url1 + .channelId + "/videos");
+
+def urlPlaylists:
+    ($url1 + .channelId + "/playlists");
+
 def title: (
     .title |
     if has("simpleText") then

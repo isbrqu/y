@@ -1,23 +1,22 @@
-include "jq/util";
+include "config/jq/util";
 [
-    .[] | select(has("videoRenderer")) | .videoRenderer |
-    {
+    down | .[] | select(has("videoRenderer")) | .videoRenderer | {
         id:
             .videoId,
         url:
-           ($url1 + .videoId),
+            urlVideo,
         title:
-           title,
+            title,
         publishedTime:
-           publishedTime,
+            publishedTime,
         duration:
-           duration,
+            duration,
         views:
-           views,
+            views,
         description:
-           description,
+            description,
         thumbnailUrl:
-           thumbnailUrl,
+            thumbnailUrl,
         badges:
             badges,
         channelId:

@@ -1,10 +1,10 @@
-include "jq/util";
+include "config/jq/util";
 [
-    .[] | select(has("playlistRenderer")) | .playlistRenderer | {
+    down | .[] | select(has("playlistRenderer")) | .playlistRenderer | {
         id:
             .playlistId,
         url:
-            ($url1 + .playlistId),
+            urlVideo,
         title:
             title,
         views:
