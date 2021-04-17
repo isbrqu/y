@@ -70,7 +70,6 @@ get_yt_json() {
     local regex="(?<=var ytInitialData = ){.*}(?=;)"
     local json
     json="$(echo "$html" | grep --perl-regexp --only-matching "$regex")"
-    json="$(echo "$json" | jq "$DOWN")"
     json="$(echo "$json"\
         | jq --from-file "$file" --arg url1 "$url1" --arg url2 "$url2")"
     echo "$json"
@@ -79,7 +78,7 @@ get_yt_json() {
 channel() {
     local query="$*"
     local type="channel"
-    local file="jq/$type.jq" 
+    local file="$CONFIG/jq/$type.jq" 
     local url1="$URL_CHANNEL"
     local html
     local json
@@ -91,7 +90,7 @@ channel() {
 video() {
     local query="$*"
     local type="video"
-    local file="jq/$type.jq" 
+    local file="$CONFIG/jq/$type.jq" 
     local url1="$URL_VIDEO"
     local url2="$URL_CHANNEL"
     local html
@@ -104,7 +103,7 @@ video() {
 playlist() {
     local query="$*"
     local type="playlist"
-    local file="jq/$type.jq" 
+    local file="$CONFIG/jq/$type.jq" 
     local url1="$URL_PLAYLIST"
     local url2="$URL_CHANNEL"
     local html
