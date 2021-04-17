@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 declare -r CONFIG="config"
+
+declare -r LANG="en-US,en;q=0.9"
 declare USERAGENT
 USERAGENT="$(cat $CONFIG/useragent)"
 
@@ -42,10 +44,7 @@ error() {
 get_yt_html() {
     local sp="${sps[$1]}"
     local query="$2" 
-    local -r LANG="en-US,en;q=0.9"
-    local useragent
     local html
-    useragent="$(cat useragent)"
     if [[ -z "$DEBUG" ]];then
         html="$(curl "$URL_RESULTS"\
         --silent\
