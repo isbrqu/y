@@ -32,22 +32,17 @@ error() {
 }
 
 get_yt_html() {
-    local sp="${sps[$1]}"
-    local query="$2" 
+    local url="$1" 
+    local data="$2"
     local html
-    if [[ -z "$DEBUG" ]];then
-        html="$(curl "$URL_RESULTS"\
+    html="$(curl "$url"\
         --silent\
-        --get --data-urlencode "search_query=$query"\
-        --get --data-urlencode "sp=$sp"\
+        --get --data "$data"\
         --header "authority: $URL_BASE"\
         --header "accept-language: $LANG"\
         --header "user-agent: $USERAGENT"\
         --location\
         --compressed)"
-    else
-        html="$(cat tmp/html_channel)"
-    fi
     echo "$html"
 }
 
@@ -65,9 +60,12 @@ channel() {
     local query="$*"
     local type="channel"
     local file="$CONFIG/jq/$type.jq" 
+    local filter="${sps[$type]}"
+    local data="search_query=${query// /+}&sp=$filter"
+    local url="$URL_RESULTS"
     local html
     local json
-    html="$(get_yt_html "$type" "$query")"
+    html="$(get_yt_html "$url" "$data")"
     json="$(get_yt_json "$html" "$file")"
     echo "$json"
 }
@@ -76,9 +74,12 @@ video() {
     local query="$*"
     local type="video"
     local file="$CONFIG/jq/$type.jq" 
+    local filter="${sps[$type]}"
+    local data="search_query=${query// /+}&sp=$filter"
+    local url="$URL_RESULTS"
     local html
     local json
-    html="$(get_yt_html "$type" "$query")"
+    html="$(get_yt_html "$url" "$data")"
     json="$(get_yt_json "$html" "$file")"
     echo "$json"
 }
@@ -87,9 +88,12 @@ playlist() {
     local query="$*"
     local type="playlist"
     local file="$CONFIG/jq/$type.jq" 
+    local filter="${sps[$type]}"
+    local data="search_query=${query// /+}&sp=$filter"
+    local url="$URL_RESULTS"
     local html
     local json
-    html="$(get_yt_html "$type" "$query")"
+    html="$(get_yt_html "$url" "$data")"
     json="$(get_yt_json "$html" "$file")"
     echo "$json"
 }
