@@ -19,13 +19,15 @@ include "config/jq/util";
             thumbnailUrl,
         badges:
             badges,
-        channelId:
-            channelId,
-        channelName:
-            channelName,
-        channelUrl:
-            channelUrl,
-        channelBadges:
-            channelBadges,
+        channel: {
+            id:
+                channelId,
+            name:
+                channelName,
+            url:
+                channelUrl,
+            badges:
+                channelBadges,
+        }
     }
 ]

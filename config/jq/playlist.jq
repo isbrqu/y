@@ -11,13 +11,15 @@ include "config/jq/util";
             .videoCount,
         thumbnailUrl:
             thumbnailUrl,
-        channelId:
-            channelId,
-        channelUrl:
-            channelUrl,
-        channelName:
-            channelName,
-        channelBadges:
-            channelBadges,
+        channel: {
+            id:
+                channelId,
+            url:
+                channelUrl,
+            name:
+                channelName,
+            badges:
+                channelBadges,
+        }
     }
 ]
