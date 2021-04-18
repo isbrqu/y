@@ -54,7 +54,17 @@ def publishedTime:
     .publishedTimeText.simpleText // "" | ascii_downcase;
 
 def duration: (
-    .lengthText.simpleText // ""
+    if (.lengthText.simpleText != null) then
+        .lengthText
+        .simpleText
+    elif has("thumbnailOverlays") then
+        .thumbnailOverlays[0]
+        .thumbnailOverlayTimeStatusRenderer
+        .text
+        .simpleText
+    else
+        ""
+    end
 );
 
 def thumbnailUrl: (
