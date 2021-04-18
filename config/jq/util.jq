@@ -61,7 +61,7 @@ def duration: (
         .thumbnailOverlays[0]
         .thumbnailOverlayTimeStatusRenderer
         .text
-        .simpleText
+        .simpleText // ""
     else
         ""
     end

@@ -27,21 +27,7 @@ def downtab:
             duration,
         views:
             views,
-        description:
-            description,
         thumbnailUrl:
             thumbnailUrl,
-        badges:
-            badges,
-        channel: {
-            id:
-                channelId,
-            name:
-                channelName,
-            url:
-                channelUrl,
-            badges:
-                channelBadges,
-        }
     }
 ]
