@@ -14,7 +14,7 @@ declare -Ar sps=(
 
 declare -r URL_BASE="www.youtube.com"
 declare -r URL_VIDEO="https://$URL_BASE/watch?v="
-declare -r URL_PLAYLIST="https://$URL_BASE/playlist?list="
+declare -r URL_PLAYLIST="https://$URL_BASE/playlist"
 declare -r URL_CHANNEL="https://$URL_BASE/channel"
 declare -r URL_RESULTS="https://$URL_BASE/results"
 
@@ -110,6 +110,19 @@ channel_video() {
     echo "$json"
 }
 
+playlist_video() {
+    local id="$1"
+    local type="playlist_video"
+    local file="$CONFIG/jq/$type.jq" 
+    local url="$URL_PLAYLIST"
+    local data="list=$id"
+    local html
+    local json
+    html="$(get_yt_html "$url" "$data")"
+    json="$(get_yt_json "$html" "$file")"
+    echo "$json"
+}
+
 main() {
     local action="$1"
     local json="null"
@@ -128,6 +141,9 @@ main() {
             ;;
             chvd|channel-video)
                 json="$(channel_video "$@")"
+            ;;
+            plvd|playlist-video)
+                json="$(playlist_video "$@")"
             ;;
             help)
                 usage
