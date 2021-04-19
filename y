@@ -110,6 +110,19 @@ channel_video() {
     echo "$json"
 }
 
+channel_playlist() {
+    local id="$1"
+    local type="channel_playlist"
+    local file="$CONFIG/jq/$type.jq" 
+    local url="$URL_CHANNEL/$id/playlists"
+    local data="view=1"
+    local html
+    local json
+    html="$(get_yt_html "$url" "$data")"
+    json="$(get_yt_json "$html" "$file")"
+    echo "$json"
+}
+
 playlist_video() {
     local id="$1"
     local type="playlist_video"
@@ -141,6 +154,9 @@ main() {
             ;;
             chvd|channel-video)
                 json="$(channel_video "$@")"
+            ;;
+            chpl|channel-playlist)
+                json="$(channel_playlist "$@")"
             ;;
             plvd|playlist-video)
                 json="$(playlist_video "$@")"
