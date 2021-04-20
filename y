@@ -4,7 +4,8 @@ declare -r CONFIG="config"
 
 declare -r LANG="en-US,en;q=0.9"
 declare USERAGENT
-USERAGENT="$(cat $CONFIG/useragent)"
+USERAGENT="$(cat "$CONFIG/useragent")"
+(( $? == 0 )) || exit 1
 
 declare -Ar sps=(
     [video]="EgIQAQ"
